@@ -1,9 +1,18 @@
-from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import redirect
+from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.shortcuts import redirect, render
+
+from .models import Category
+
+menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
 
 def index(request):
-    return HttpResponse('Page of app shop')
+    posts = Category.objects.all()
+    return render(request, 'shop/index.html', {'posts': posts, 'menu': menu, 'title': 'Main page'})
+
+
+def about(request):
+    return render(request, 'shop/about.html', {'title': 'About'})
 
 
 def categories(request, cat):
@@ -17,7 +26,7 @@ def archive(request, year):
         raise Http404()
     elif int(year) < 2000:
         return redirect('home', permanent=True)
-    return HttpResponse(f"<h1>Архив по годам</h1>{year}</p>")
+    return HttpResponse(f'<h1>Архив по годам</h1>{year}</p>')
 
 
 def pageNotFound(request, exception):
