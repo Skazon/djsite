@@ -7,13 +7,27 @@
     <link type="text/css" href="{% static 'shop/css/styles.css' %}" rel="stylesheet" />
 </head>
 <body>
-{% block mainmenu %}
-<ul>
-    {% for m in menu %}
-    <li>{{ m }}</li>
-    {% endfor %}
-</ul>
-{% endblock mainmenu %}
+
+<!-- Верхняя навигация -->
+<div class="topnav">
+	{% for m in menu %}
+	{% if not forloop.last %}
+	<a href="{% url m.url_name %}">{{m.title}}</a>
+	{% else %}
+	<a class="last" href="{% url m.url_name %}">{{m.title}}</a>
+	{% endif %}
+	{% endfor %}
+</div>
+<!-- Верхняя навигация -->
+
+<!-- Боковая навигация -->
+<div class="sidenav">
+	{% for cat in categories_view %}
+<!--	<a href="{% url 'categories' cat.pk %}">{{ cat.name }}</a>-->
+	<a href="{{cat.get_absolute_url}}">{{ cat.name }}</a>
+	{% endfor %}
+</div>
+<!-- Боковая навигация -->
 
 {% block content %}
 {% endblock %}

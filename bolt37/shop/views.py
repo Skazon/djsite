@@ -3,22 +3,43 @@ from django.shortcuts import redirect, render
 
 from .models import Category
 
-menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
+menu = [
+    {'title': 'О сайте', 'url_name': 'about'},
+    {'title': 'Контакты', 'url_name': 'contact'},
+    {'title': 'Войти', 'url_name': 'login'},
+]
+product_categories = Category.objects.all()
+context = {
+        'categories_view': product_categories,
+        'menu': menu,
+        'title': 'Главная страница',
+    }
 
 
 def index(request):
-    posts = Category.objects.all()
-    return render(request, 'shop/index.html', {'posts': posts, 'menu': menu, 'title': 'Main page'})
+    context['title'] = 'Главная страница'
+    return render(request, 'shop/base.html', context=context)
 
 
 def about(request):
-    return render(request, 'shop/about.html', {'title': 'About'})
+    context['title'] = 'О сайте'
+    return render(request, 'shop/about.html', context=context)
 
 
-def categories(request, cat):
+def contact(request):
+    context['title'] = 'Контакты'
+    return render(request, 'shop/base.html', context=context)
+
+
+def login(request):
+    context['title'] = 'Вход'
+    return render(request, 'shop/base.html', context=context)
+
+
+def categories(request, cate):
     if request.GET:
         print(request.GET)
-    return HttpResponse(f'<h1> Articles by category <h1><p>{cat}<p>')
+    return HttpResponse(f'<h1> Articles by category <h1><p>{cate}<p>')
 
 
 def archive(request, year):
