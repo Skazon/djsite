@@ -1,45 +1,60 @@
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect, render
 
-from .models import Category
+from shop.models import Category
 
 menu = [
     {'title': 'О сайте', 'url_name': 'about'},
     {'title': 'Контакты', 'url_name': 'contact'},
     {'title': 'Войти', 'url_name': 'login'},
 ]
-product_categories = Category.objects.all()
-context = {
-        'categories_view': product_categories,
-        'menu': menu,
-        'title': 'Главная страница',
-    }
 
 
 def index(request):
-    context['title'] = 'Главная страница'
+    context = {
+        'menu': menu,
+        'title': 'Главная страница',
+    }
     return render(request, 'shop/base.html', context=context)
 
 
 def about(request):
-    context['title'] = 'О сайте'
+    context = {
+        'menu': menu,
+        'title': 'О сайте',
+    }
     return render(request, 'shop/about.html', context=context)
 
 
 def contact(request):
-    context['title'] = 'Контакты'
+    context = {
+        'menu': menu,
+        'title': 'Контакты',
+    }
     return render(request, 'shop/base.html', context=context)
 
 
 def login(request):
-    context['title'] = 'Вход'
+    context = {
+        'menu': menu,
+        'title': 'Вход',
+    }
     return render(request, 'shop/base.html', context=context)
 
 
 def categories(request, cate):
     if request.GET:
         print(request.GET)
-    return HttpResponse(f'<h1> Articles by category <h1><p>{cate}<p>')
+
+    selected_category = Category.objects.get(id=cate)
+    products = selected_category.products.all()
+
+    context = {
+        'menu': menu,
+        'products': products,
+        'selected_category': selected_category,
+    }
+    return render(request, 'shop/index.html', context=context)
 
 
 def archive(request, year):

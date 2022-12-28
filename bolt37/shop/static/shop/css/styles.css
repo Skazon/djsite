@@ -7,6 +7,18 @@ html, body {
 	color: #444;
 }
 
+h1 {
+  font-size: 50px;
+  font-weight: 300;
+  margin-left: 250px;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: 300;
+  margin-left: 250px;
+}
+
 a {
 	color: #0059b2;
 	text-decoration: none;
@@ -36,7 +48,7 @@ img {max-width: 600px; height: auto;}
 
 /* Изменение фона при наведении */
 .topnav a:hover {
-    background-color: #ddd;
+    background-color: white;
     color: black;
 }
 
@@ -47,9 +59,11 @@ img {max-width: 600px; height: auto;}
 }
 
 /* Смещение последней ссылки */
-.topnav a.last {float: right}
+.topnav a.last {
+    float: right
+}
 
-/* Смещение последней ссылки */
+/* Боковая навигация */
 .sidenav {
     height: 100%;
     width: 200px;
@@ -59,9 +73,10 @@ img {max-width: 600px; height: auto;}
     left: 0;
     background-color: #111;
     overflow-x: hidden;
-    padding-top: 20px;
+    padding-top: 0px;
 }
 
+/* Style для ссылок в боковой навигации */
 .sidenav a {
     padding: 6px 6px 6px 32px;
     text-decoration: none;
@@ -70,12 +85,19 @@ img {max-width: 600px; height: auto;}
     display: block;
 }
 
+/* Изменение при наведении */
 .sidenav a:hover {
     color: #f1f1f1;
 }
 
+/* Изменение выбранной категории */
+.sidenav a.selected {
+    background-color: white;
+    color: black;
+}
+
 .main {
-    margin-left: 200px; /* Same as the width of the sidenav */
+    margin-left: 250px; /* Same as the width of the sidenav */
 }
 
 @media screen and (max-height: 450px) {

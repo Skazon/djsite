@@ -1,0 +1,9 @@
+<div class="sidenav">
+    {% for cat in cats %}
+    	{% if cat.id == cat_selected %}
+    		<a class="selected" href="{{cat.get_absolute_url}}">{{ cat.name }}</a>
+    	{% else %}
+    		<a href="{{cat.get_absolute_url}}">{{ cat.name }}</a>
+    	{% endif %}
+    {% endfor %}
+</div>

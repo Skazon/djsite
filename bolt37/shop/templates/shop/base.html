@@ -1,4 +1,5 @@
 {% load static %}
+{% load shop_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,12 +22,7 @@
 <!-- Верхняя навигация -->
 
 <!-- Боковая навигация -->
-<div class="sidenav">
-	{% for cat in categories_view %}
-<!--	<a href="{% url 'categories' cat.pk %}">{{ cat.name }}</a>-->
-	<a href="{{cat.get_absolute_url}}">{{ cat.name }}</a>
-	{% endfor %}
-</div>
+{% show_categories cat_selected=selected_category.id %}
 <!-- Боковая навигация -->
 
 {% block content %}
