@@ -23,6 +23,7 @@ a {
 	color: #0059b2;
 	text-decoration: none;
 }
+
 a:hover {
 	color: #CC0000;
 	text-decoration: underline;
@@ -98,6 +99,28 @@ img {max-width: 600px; height: auto;}
 
 .main {
     margin-left: 250px; /* Same as the width of the sidenav */
+}
+
+.img-left {
+	max-width: 300px;
+	float: left;
+	padding: 0 10px 10px 0;
+	margin-left: 250px;
+}
+
+.products {
+    text-decoration: none;
+    font-size: 17px;
+    color: #818181;
+    display: block;
+    margin-left: 250px;
+}
+
+.description {
+    text-decoration: none;
+    font-size: 17px;
+    color: #818181;
+    display: block;
 }
 
 @media screen and (max-height: 450px) {

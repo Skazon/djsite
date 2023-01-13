@@ -1,0 +1,19 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h1>{{selected_product.name}}</h1>
+<div>
+    {% if selected_product.image %}
+        <p><img class="img-left" src="{{selected_product.image.url}}"></p>
+    {% endif %}
+</div>
+<div>
+    {% if selected_product.available %}
+        <p>{{selected_product.price}}</p>
+        <p>{{selected_product.stock}}</p>
+    {% else %}
+        <p>Нет на складе</p>
+    {% endif %}
+    <p class="description">{{selected_product.description}}</p>
+</div>
+{% endblock %}

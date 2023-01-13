@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponse, HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from shop.models import Category
+from shop.models import Category, Product
 
 menu = [
     {'title': 'О сайте', 'url_name': 'about'},
@@ -46,7 +46,7 @@ def categories(request, cate):
     if request.GET:
         print(request.GET)
 
-    selected_category = Category.objects.get(id=cate)
+    selected_category = Category.objects.get(slug=cate)
     products = selected_category.products.all()
 
     context = {
@@ -55,6 +55,17 @@ def categories(request, cate):
         'selected_category': selected_category,
     }
     return render(request, 'shop/index.html', context=context)
+
+
+def show_product_page(request, cate_slug, product_slug):
+    selected_product = get_object_or_404(Product, slug=product_slug)
+
+    context = {
+        'menu': menu,
+        'selected_category': selected_product.category,
+        'selected_product': selected_product,
+    }
+    return render(request, 'shop/product_page.html', context=context)
 
 
 def archive(request, year):

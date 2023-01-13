@@ -7,6 +7,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug')
     list_display_links = ('id', )
     search_fields = ('name', )
+    prepopulated_fields = {'slug': ('name', )}
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -15,6 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', )
     list_editable = ('available', )
     list_filter = ('category', 'available')
+    prepopulated_fields = {'slug': ('name',)}
 
 
 admin.site.register(Category, CategoryAdmin)
