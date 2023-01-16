@@ -57,7 +57,7 @@ def categories(request, cate):
     return render(request, 'shop/index.html', context=context)
 
 
-def show_product_page(request, cate_slug, product_slug):
+def show_product_page(request, cate, product_slug):
     selected_product = get_object_or_404(Product, slug=product_slug)
 
     context = {
