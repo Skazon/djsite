@@ -1,6 +1,8 @@
+from django.db import IntegrityError
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 
+from shop.forms import AddPostForm
 from shop.models import Category, Product
 
 menu = [
@@ -66,6 +68,25 @@ def show_product_page(request, cate, product_slug):
         'selected_product': selected_product,
     }
     return render(request, 'shop/product_page.html', context=context)
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            try:
+                Product.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except IntegrityError:
+                form.add_error(None, 'Ошибка добавления товара')
+    else:
+        form = AddPostForm()
+
+    context = {
+        'menu': menu,
+        'form': form,
+    }
+    return render(request, 'shop/add_page.html', context=context)
 
 
 def archive(request, year):
