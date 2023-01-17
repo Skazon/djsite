@@ -1,4 +1,3 @@
-from django.db import IntegrityError
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -72,13 +71,10 @@ def show_product_page(request, cate, product_slug):
 
 def add_product(request):
     if request.method == 'POST':
-        form = AddPostForm(request.POST)
+        form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
-            try:
-                Product.objects.create(**form.cleaned_data)
-                return redirect('home')
-            except IntegrityError:
-                form.add_error(None, 'Ошибка добавления товара')
+            form.save()
+            return redirect('home')
     else:
         form = AddPostForm()
 
