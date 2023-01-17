@@ -6,12 +6,16 @@ from shop.models import Category
 register = template.Library()
 
 
-@register.simple_tag(name='get_cats')
-def get_categories(custom_filter=None):
-    if not custom_filter:
-        return Category.objects.all()
-    else:
-        return Category.objects.filter(pk=custom_filter)
+@register.simple_tag(name='get_menu')
+def get_menu():
+    menu = [
+        {'title': 'Главная', 'url_name': 'home'},
+        {'title': 'Добавить', 'url_name': 'add_product'},
+        {'title': 'О сайте', 'url_name': 'about'},
+        {'title': 'Контакты', 'url_name': 'contact'},
+        {'title': 'Войти', 'url_name': 'login'},
+    ]
+    return menu
 
 
 @register.inclusion_tag('shop/list_categories.html')

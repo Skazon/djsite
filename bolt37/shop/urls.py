@@ -1,18 +1,17 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 
-from .views import about, add_product, archive, categories, contact, index, login, show_product_page
+from .views import About, AddProduct, Contact, Login, Products_by_Categories, ShopHome, ShowProduct
 
 product_patterns = [
-    path('', categories, name='categories'),
-    path('<slug:product_slug>/', show_product_page, name='product_page'),
+    path('', Products_by_Categories.as_view(), name='categories'),
+    path('<slug:product_slug>/', ShowProduct.as_view(), name='product_page'),
 ]
 
 urlpatterns = [
-    path('', index, name='home'),
-    path('about/', about, name='about'),
-    path('contact/', contact, name='contact'),
-    path('login/', login, name='login'),
-    path('add_product/', add_product, name='add_product'),
+    path('', ShopHome.as_view(), name='home'),
+    path('about/', About.as_view(), name='about'),
+    path('contact/', Contact.as_view(), name='contact'),
+    path('login/', Login.as_view(), name='login'),
+    path('add_product/', AddProduct.as_view(), name='add_product'),
     path('<slug:cate>/', include(product_patterns)),
-    re_path(r'^archive/(?P<year>[0-9]{4})/', archive),
 ]

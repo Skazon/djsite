@@ -1,96 +1,78 @@
-from django.http import Http404, HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseNotFound
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from shop.forms import AddPostForm
 from shop.models import Category, Product
 
-menu = [
-    {'title': 'О сайте', 'url_name': 'about'},
-    {'title': 'Контакты', 'url_name': 'contact'},
-    {'title': 'Войти', 'url_name': 'login'},
-]
+
+class BaseTemplateView(TemplateView):
+    title = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.title
+        return context
 
 
-def index(request):
-    context = {
-        'menu': menu,
-        'title': 'Главная страница',
-    }
-    return render(request, 'shop/base.html', context=context)
+class ShopHome(BaseTemplateView):
+    template_name = 'shop/base.html'
+    title = 'Главная страница'
 
 
-def about(request):
-    context = {
-        'menu': menu,
-        'title': 'О сайте',
-    }
-    return render(request, 'shop/about.html', context=context)
+class About(BaseTemplateView):
+    template_name = 'shop/about.html'
+    title = 'О сайте'
 
 
-def contact(request):
-    context = {
-        'menu': menu,
-        'title': 'Контакты',
-    }
-    return render(request, 'shop/base.html', context=context)
+class Contact(BaseTemplateView):
+    template_name = 'shop/base.html'
+    title = 'Контакты'
 
 
-def login(request):
-    context = {
-        'menu': menu,
-        'title': 'Вход',
-    }
-    return render(request, 'shop/base.html', context=context)
+class Login(BaseTemplateView):
+    template_name = 'shop/base.html'
+    title = 'Вход'
 
 
-def categories(request, cate):
-    if request.GET:
-        print(request.GET)
+class Products_by_Categories(ListView):
+    template_name = 'shop/index.html'
+    context_object_name = 'products'
 
-    selected_category = Category.objects.get(slug=cate)
-    products = selected_category.products.all()
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        selected_category = Category.objects.get(slug=self.kwargs['cate'])
+        context['title'] = selected_category.name
+        context['selected_category'] = selected_category
+        return context
 
-    context = {
-        'menu': menu,
-        'products': products,
-        'selected_category': selected_category,
-    }
-    return render(request, 'shop/index.html', context=context)
-
-
-def show_product_page(request, cate, product_slug):
-    selected_product = get_object_or_404(Product, slug=product_slug)
-
-    context = {
-        'menu': menu,
-        'selected_category': selected_product.category,
-        'selected_product': selected_product,
-    }
-    return render(request, 'shop/product_page.html', context=context)
+    def get_queryset(self):
+        return Product.objects.filter(category__slug=self.kwargs['cate'])
 
 
-def add_product(request):
-    if request.method == 'POST':
-        form = AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = AddPostForm()
+class ShowProduct(DetailView):
+    model = Product
+    template_name = 'shop/product_page.html'
+    slug_url_kwarg = 'product_slug'
+    context_object_name = 'selected_product'
 
-    context = {
-        'menu': menu,
-        'form': form,
-    }
-    return render(request, 'shop/add_page.html', context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object
+        context['selected_category'] = self.object.category
+        return context
 
 
-def archive(request, year):
-    if int(year) > 2020:
-        raise Http404()
-    elif int(year) < 2000:
-        return redirect('home', permanent=True)
-    return HttpResponse(f'<h1>Архив по годам</h1>{year}</p>')
+class AddProduct(CreateView):
+    form_class = AddPostForm
+    template_name = 'shop/add_page.html'
+    success_url = reverse_lazy('home')  # Если не указать, то перейдет на созданную страницу,
+    # если определен get_absolute_url()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление пользовательского товара'
+        return context
 
 
 def pageNotFound(request, exception):

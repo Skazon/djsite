@@ -11,6 +11,7 @@
 
 <!-- Верхняя навигация -->
 <div class="topnav">
+	{% get_menu as menu %}
 	{% for m in menu %}
 	{% if not forloop.last %}
 	<a href="{% url m.url_name %}">{{m.title}}</a>
