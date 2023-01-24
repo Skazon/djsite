@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
@@ -63,11 +64,12 @@ class ShowProduct(DetailView):
         return context
 
 
-class AddProduct(CreateView):
+class AddProduct(LoginRequiredMixin, CreateView):
     form_class = AddPostForm
     template_name = 'shop/add_page.html'
     success_url = reverse_lazy('home')  # Если не указать, то перейдет на созданную страницу,
     # если определен get_absolute_url()
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
