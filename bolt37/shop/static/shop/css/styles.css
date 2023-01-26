@@ -64,7 +64,7 @@ img {max-width: 600px; height: auto;}
 }
 
 /* Смещение последней ссылки */
-.topnav a.last {
+.topnav .last {
     float: right
 }
 

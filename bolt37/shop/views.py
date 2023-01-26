@@ -1,9 +1,12 @@
+from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseNotFound
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
-from shop.forms import AddPostForm, RegisterUserForm
+from shop.forms import AddPostForm, LoginUserForm, RegisterUserForm
 from shop.models import Category, Product
 
 
@@ -81,12 +84,33 @@ class AddProduct(LoginRequiredMixin, CreateView):
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'shop/register.html'
-    success_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Регистрация'
         return context
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'shop/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Вход'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+class LogoutUser(LogoutView):
+    next_page = 'login'
 
 
 def pageNotFound(request, exception):
