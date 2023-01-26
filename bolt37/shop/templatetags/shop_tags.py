@@ -13,7 +13,6 @@ def get_menu():
         {'title': 'Добавить', 'url_name': 'add_product'},
         {'title': 'О сайте', 'url_name': 'about'},
         {'title': 'Контакты', 'url_name': 'contact'},
-        {'title': 'Войти', 'url_name': 'login'},
     ]
     return menu
 

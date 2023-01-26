@@ -13,12 +13,10 @@
 <div class="topnav">
 	{% get_menu as menu %}
 	{% for m in menu %}
-	{% if not forloop.last %}
 	<a href="{% url m.url_name %}">{{m.title}}</a>
-	{% else %}
-	<a class="last" href="{% url m.url_name %}">{{m.title}}</a>
-	{% endif %}
 	{% endfor %}
+	<a class="last" href="{% url 'login' %}">Войти</a>
+	<a class="last" href="{% url 'register' %}">Регистрация</a>
 </div>
 <!-- Верхняя навигация -->
 

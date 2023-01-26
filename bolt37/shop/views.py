@@ -3,7 +3,7 @@ from django.http import HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
-from shop.forms import AddPostForm
+from shop.forms import AddPostForm, RegisterUserForm
 from shop.models import Category, Product
 
 
@@ -75,6 +75,17 @@ class AddProduct(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление пользовательского товара'
+        return context
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'shop/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация'
         return context
 
 
