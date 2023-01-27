@@ -52,7 +52,7 @@ class Products_by_Categories(ListView):
         return context
 
     def get_queryset(self):
-        return Product.objects.filter(category__slug=self.kwargs['cate'])
+        return Product.objects.filter(category__slug=self.kwargs['cate']).select_related('category')
 
 
 class ShowProduct(DetailView):
