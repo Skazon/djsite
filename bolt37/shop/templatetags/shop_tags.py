@@ -1,4 +1,5 @@
 from django import template
+from django.core.cache import cache
 
 from shop.models import Category
 
@@ -19,5 +20,8 @@ def get_menu():
 
 @register.inclusion_tag('shop/list_categories.html')
 def show_categories(cat_selected=0):
-    cats = Category.objects.all()
+    cats = cache.get('cats')
+    if cats is None:
+        cats = Category.objects.all()
+        cache.set('cats', cats, 60 * 60)
     return {'cats': cats, 'cat_selected': cat_selected}
