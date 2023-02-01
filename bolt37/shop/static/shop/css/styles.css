@@ -68,6 +68,24 @@ img {max-width: 600px; height: auto;}
     float: right
 }
 
+.topnav input[type=search] {
+  padding: 14px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  padding: 14px 15px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
 /* Боковая навигация */
 .sidenav {
     height: 100%;
@@ -161,4 +179,7 @@ img {max-width: 600px; height: auto;}
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+  .topnav input[type=search] {
+    border: 1px solid #ccc;
+  }
 }

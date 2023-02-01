@@ -8,6 +8,7 @@ from .views import (
     LogoutUser,
     Products_by_Categories,
     RegisterUser,
+    Search,
     ShopHome,
     ShowProduct
 )
@@ -25,5 +26,6 @@ urlpatterns = [
     path('logout/', LogoutUser.as_view(), name='logout'),
     path('add_product/', AddProduct.as_view(), name='add_product'),
     path('register/', RegisterUser.as_view(), name='register'),
+    path('search/', Search.as_view(), name='search'),
     path('<slug:cate>/', include(product_patterns)),
 ]

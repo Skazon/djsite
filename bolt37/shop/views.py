@@ -39,20 +39,33 @@ class Login(BaseTemplateView):
     title = 'Вход'
 
 
-class Products_by_Categories(ListView):
+class CreateListView(ListView):
     template_name = 'shop/index.html'
     context_object_name = 'products'
-    paginate_by = 4
+    paginate_by = 10
 
+
+class Products_by_Categories(CreateListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        selected_category = Category.objects.get(slug=self.kwargs['cate'])
+        selected_category = Category.objects.get(slug=self.kwargs.get('cate'))
         context['title'] = selected_category.name
         context['selected_category'] = selected_category
         return context
 
     def get_queryset(self):
-        return Product.objects.filter(category__slug=self.kwargs['cate']).select_related('category')
+        return Product.objects.filter(category__slug=self.kwargs.get('cate')).select_related('category')
+
+
+class Search(CreateListView):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Результаты поиска'
+        context['q'] = self.request.GET.get('q')
+        return context
+
+    def get_queryset(self):
+        return Product.objects.filter(name__icontains=self.request.GET.get('q'))
 
 
 class ShowProduct(DetailView):
