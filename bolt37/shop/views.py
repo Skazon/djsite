@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from shop.forms import AddPostForm, LoginUserForm, RegisterUserForm
@@ -39,25 +39,38 @@ class Login(BaseTemplateView):
     title = 'Вход'
 
 
-class CreateListView(ListView):
+class ShopBaseListView(ListView):
     template_name = 'shop/index.html'
     context_object_name = 'products'
     paginate_by = 10
 
 
-class Products_by_Categories(CreateListView):
+class Prices:
+    """Жанры и года выхода фильмов"""
+
+    @classmethod
+    def get_prices(cls):
+        return Product.objects.values('price')
+
+
+class Products_by_Categories(ShopBaseListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         selected_category = Category.objects.get(slug=self.kwargs.get('cate'))
         context['title'] = selected_category.name
         context['selected_category'] = selected_category
+        context['prices'] = Prices.get_prices()
+        context['filter_url'] = self.get_filter_url()
         return context
 
     def get_queryset(self):
         return Product.objects.filter(category__slug=self.kwargs.get('cate')).select_related('category')
 
+    def get_filter_url(self):
+        return reverse('filter_product', kwargs={'cate': self.kwargs.get('cate')})
 
-class Search(CreateListView):
+
+class Search(ShopBaseListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Результаты поиска'
@@ -66,6 +79,12 @@ class Search(CreateListView):
 
     def get_queryset(self):
         return Product.objects.filter(name__icontains=self.request.GET.get('q'))
+
+
+class FilterProduct(Prices, Products_by_Categories):
+    def get_queryset(self):
+        filter_pattern = [float(value.replace(',', '.')) for value in self.request.GET.getlist('price')]
+        return Product.objects.filter(price__in=filter_pattern).select_related('category')
 
 
 class ShowProduct(DetailView):

@@ -1,6 +1,23 @@
 {% extends 'shop/base.html' %}
 
 {% block content %}
+<div>
+    <form action="{{filter_url}}" method="get">
+            <h3 class="sear-head editContent">Цены</h3>
+            <ul class="w3layouts-box-list">
+                {% for price in prices %}
+                <li class="editContent">
+                    <input type="checkbox" class="checked" name="price" value="{{ price.price }}">
+                    <span class="span editContent">{{ price.price }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        <button type="submit">Применить</button>
+    </form>
+</div>
+
+
+
 <h1>{{selected_category}}</h1>
 <div class="products">
     {% for p in products %}
