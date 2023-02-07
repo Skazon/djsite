@@ -1,5 +1,5 @@
 html, body {
-	font-family: 'Arial';
+	font-family: 'Aeroport';
 	margin: 0;
 	padding: 0;
 	height: 100%;
@@ -10,13 +10,11 @@ html, body {
 h1 {
   font-size: 50px;
   font-weight: 300;
-  margin-left: 250px;
 }
 
 h2 {
   font-size: 25px;
   font-weight: 300;
-  margin-left: 250px;
 }
 
 a {
@@ -24,21 +22,18 @@ a {
 	text-decoration: none;
 }
 
-form {
-    margin-left: 250px;
-}
-
 a:hover {
 	color: #CC0000;
 	text-decoration: underline;
 }
 
-img {max-width: 600px; height: auto;}
-
 /* Черный фон для верхней навигации */
 .topnav {
     background-color: #333;
     overflow: hidden;
+    top: 0;
+    width: 100%;
+    position: sticky;
 }
 
 /* Style для ссылок в верхней навигации */
@@ -48,41 +43,46 @@ img {max-width: 600px; height: auto;}
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 /* Изменение фона при наведении */
 .topnav a:hover {
-    background-color: white;
-    color: black;
+    background-color: #fff;
+    color: #000;
 }
 
 /* Изменение цвета для активной ссылки */
 .topnav a.active {
     background-color: #4CAF50;
-    color: white;
+    color: #fff;
 }
 
 /* Смещение последней ссылки */
 .topnav .last {
-    float: right
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
 }
 
+/* Поле поиска */
 .topnav input[type=search] {
-  padding: 14px;
-  font-size: 17px;
+  padding: 16px;
+  font-size: 18px;
   border: none;
 }
 
-.topnav .search-container button {
-  padding: 14px 15px;
+/* Кнопка поиска */
+.search_container button {
+  padding: 16px 15px;
   background: #ddd;
-  font-size: 17px;
+  font-size: 18px;
   border: none;
   cursor: pointer;
 }
 
-.topnav .search-container button:hover {
+.search_container button:hover {
   background: #ccc;
 }
 
@@ -103,7 +103,7 @@ img {max-width: 600px; height: auto;}
 .sidenav a {
     padding: 6px 6px 6px 32px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 18px;
     color: #818181;
     display: block;
 }
@@ -115,70 +115,180 @@ img {max-width: 600px; height: auto;}
 
 /* Изменение выбранной категории */
 .sidenav a.selected {
-    background-color: white;
-    color: black;
+    background-color: #fff;
+    color: #000;
 }
 
-.main {
-    margin-left: 250px; /* Same as the width of the sidenav */
-}
-
-.img-left {
-	max-width: 300px;
-	float: left;
-	padding: 0 10px 10px 0;
-	margin-left: 250px;
-}
-
-.products {
-    text-decoration: none;
-    font-size: 17px;
-    color: #818181;
-    display: block;
+.content {
     margin-left: 250px;
 }
 
-.description {
+/* Отображение списка товаров */
+.products {
     text-decoration: none;
-    font-size: 17px;
+    font-size: 18px;
     color: #818181;
     display: block;
 }
 
-.form-input {
-    width: 3000px;
-    font-size: 160px;
+.object_card {
+    line-height: 1.2;
+    font-family: Aeroport;
+    font-size: 16px;
+    color: #000;
+    position: relative;
+    display: flex;
+    z-index: 3;
 }
 
-.form-label {
+.card_left {
+    width: 49.2%;
+    padding-bottom: 0;
+    float: none;
+    margin-bottom: 50px;
+    z-index: 2;
+}
+
+.card_right {
+    width: 50.8%;
+    min-height: auto;
+    padding-bottom: 0;
+    float: none;
+    padding-left: 30px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+    z-index: auto;
+}
+
+.card_right h1{
+    letter-spacing: -1px;
+    color: #333;
+    margin: 0 0 20px 0;
+    text-transform: none;
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+/* Описание товара на странице */
+.description {
+    text-decoration: none;
+    font-size: 16px;
+    color: #818181;
+    display: block;
+}
+
+/* Изображение на странице товаров */
+.img_left {
+	width: 590px;
+	float: left;
+	padding: 0 10px 10px 0;
+}
+
+.product_img {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    outline: 0;
+    border: 0;
+    width: auto!important;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    height: auto;
+    display: block;
+}
+
+/* Label формы */
+.form_label {
     display: inline-block;
     min-width: 150px;
     vertical-align: top;
 }
 
-.form-error ul {
+/* Ошибка в форме */
+.form_error ul {
     list-style: none;
     padding: 0;
     color: #CC0000;
 }
 
-.form-button {
+/* Кнопка формы. Пока не используется!!!! */
+.form_button {
     min-width: 200px;
     font-size: 16px;
 }
 
-.list-pages {
-    margin-left: 250px;
-}
-
-.form-input {
+/* Поле ввода формы */
+.form_input_low {
     width: 300px;
     font-size: 16px;
 }
 
+/* Блок отзывов */
+.reviews {
+    font-family: Aeroport;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #000;
+    display: block;
+}
+
+.reviews h1 {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.review_user_time_create {
+    line-height: 2;
+}
+
+.review_user {
+    font-weight: 700;
+}
+
+.review_time_create {
+    color: #818181;
+    margin-left: 15px;
+}
+
+.review_rating {
+    font-weight: 700;
+}
+
+.review_h1 {
+    line-height: 2;
+    font-weight: 700;
+}
+
+/* Аккордеон */
+.accordion {
+    font-family: 'Aeroport';
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 20%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Тело аккордеона */
+.panel {
+    display: none;
+    overflow: hidden;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .sidenav a {font-size: 17px;}
   .topnav input[type=search] {
     border: 1px solid #ccc;
   }

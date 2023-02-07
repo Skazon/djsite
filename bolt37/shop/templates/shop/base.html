@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+	<link type="text/css" href = "{% static 'shop/css/fonts/aeroport/style.css' %}" rel="stylesheet" />
     <link type="text/css" href="{% static 'shop/css/styles.css' %}" rel="stylesheet" />
 </head>
 <body>
@@ -15,7 +16,7 @@
 	{% for m in menu %}
 	<a href="{% url m.url_name %}">{{m.title}}</a>
 	{% endfor %}
-	<div class="search-container">
+	<div class="search_container">
 		<form action="{% url 'search'%}" method="get">
 			<input type="search" placeholder="ПОИСК" name="q" required>
 			<button type="submit">Найти</button>
@@ -37,7 +38,9 @@
 {% show_categories cat_selected=selected_category.id %}
 <!-- Боковая навигация -->
 
-{% block content %}
-{% endblock %}
+<div class="content">
+	{% block content %}
+	{% endblock %}
+</div>
 </body>
 </html>

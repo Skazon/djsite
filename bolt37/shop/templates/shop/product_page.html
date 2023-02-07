@@ -1,19 +1,124 @@
 {% extends 'shop/base.html' %}
 
 {% block content %}
-<h1>{{selected_product.name}}</h1>
-<div>
-    {% if selected_product.image %}
-        <p><img class="img-left" src="{{selected_product.image.url}}"></p>
-    {% endif %}
+<div class="object_card">
+    <div class="card_left">
+        <div class="img_left">
+        {% if selected_product.image %}
+            <p><img class="product_img" src="{{selected_product.image.url}}"></p>
+        {% endif %}
+        </div>
+        <div class="card_info">
+            <p class="description">{{selected_product.description}}</p>
+        </div>
+    </div>
+    <div class="card_right">
+        <h1>{{selected_product.name}}</h1>
+        {% if selected_product.available %}
+            <p>{{selected_product.price}}</p>
+            <p>{{selected_product.stock}}</p>
+        {% else %}
+            <p>Нет на складе</p>
+        {% endif %}
+    </div>
 </div>
-<div>
-    {% if selected_product.available %}
-        <p>{{selected_product.price}}</p>
-        <p>{{selected_product.stock}}</p>
-    {% else %}
-        <p>Нет на складе</p>
-    {% endif %}
-    <p class="description">{{selected_product.description}}</p>
+<div class="reviews">
+    <div class="form">
+        <button class="accordion">Оставить отзыв</button>
+            <div class="panel">
+                {% if request.user.is_authenticated %}
+                    {% if use_form %}
+                        <h1>Добавить отзыв</h1>
+                        <form action="{{selected_product.post}}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form_error">{{ form.non_field_errors }}</div>
+                            {% for f in form %}
+                                <p><label class="form_label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+                                <div class="form_error">{{ f.errors }}</div>
+                            {% endfor %}
+                            <button type="submit">Добавить отзыв</button>
+                        </form>
+                    {% else %}
+                        <p>Вы уже оставляли отзыв</p>
+                    {% endif %}
+                {% else %}
+                    <p>Оставлять отзывы могут только авторизованные пользователи</p>
+                {% endif %}
+            </div>
+    </div>
+    <div>
+        <h1>Отзывы</h1>
+        {% for review in reviews %}
+            <div class="review_header">
+                <div class="review_user_time_create">
+                    <span class="review_user">{{review.user}}</span>
+                    <span class="review_time_create">{{review.time_create}}</span>
+                </div>
+                <div class="review_rating">
+                    <span>Оценка: {{review.rating}}</span>
+                </div>
+            </div>
+            <div class="review_description">
+                {% if review.advantages or review.drawbacks %}
+                    <div class="review_block">
+                        <div>
+                            <span class="review_h1">Достоинства</span>
+                        </div>
+                        <div>
+                            {% if review.advantages %}
+                                <span class="review_text">{{review.advantages}}</span>
+                            {% else %}
+                                <span class="review_text">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="review_block">
+                        <div>
+                            <span class="review_h1">Недостатки</span>
+                        </div>
+                        <div>
+                            {% if review.drawbacks %}
+                                <span class="review_text">{{review.drawbacks}}</span>
+                            {% else %}
+                                <span class="review_text">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if review.text %}
+                    <div class="review_block">
+                        <div>
+                            <span class="review_h1">Комментарий</span>
+                        </div>
+                        <div>
+                            <span class="review_text">{{review.text}}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                <hr>
+                <br>
+            </div>
+        {% empty %}
+            <p>Отзывы пока никто не оставлял</p>
+        {% endfor %}
+    </div>
 </div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
+</script>
+
 {% endblock %}

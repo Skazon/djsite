@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Category, Product
+from .models import Category, Product, Review
 
 
 @admin.register(Category)
@@ -23,6 +23,23 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ('category', 'name', 'slug', 'image', 'get_image', 'description', 'price', 'stock', 'available')
     readonly_fields = ('get_image',)
     save_on_top = True
+
+    def get_image(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" width=60>')
+
+    get_image.short_description = 'Изображение'
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'product', 'rating', 'moder')
+    list_display_links = ('id', )
+    search_fields = ('product', )
+    list_editable = ('moder', )
+    list_filter = ('product', 'user')
+    fields = ('user', 'product', 'image', 'get_image', 'advantages', 'drawbacks', 'text', 'rating', 'moder')
+    readonly_fields = ('user', 'get_image')
 
     def get_image(self, obj):
         if obj.image:
